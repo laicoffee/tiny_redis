@@ -135,12 +135,5 @@ public class Cache<K, V> implements ICache <K, V> {
         return null;
     }
 
-    public ICache<K,V> build(){
-        Cache<K,V> cache = new Cache<>();
-        cache.map(map);
-        cache.evict(evict);
-        cache.sizeLimit(sizeLimit);
-        return CacheProxy.getProxy(cache);
-    }
 
 }
