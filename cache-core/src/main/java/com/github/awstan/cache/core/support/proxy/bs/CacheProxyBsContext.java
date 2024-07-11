@@ -1,7 +1,9 @@
 package com.github.awstan.cache.core.support.proxy.bs;
 
+import com.github.awstan.cache.annotation.CacheInterceptor;
 import com.github.awstan.cache.api.ICache;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -17,6 +19,22 @@ public class CacheProxyBsContext implements ICacheProxyBsContext {
 
     private Method method;
 
+    private CacheInterceptor cacheInterceptor;
+
+
+
+
+
+    @Override
+    public CacheInterceptor interceptor() {
+        return cacheInterceptor;
+    }
+
+    public CacheProxyBsContext interceptor(CacheInterceptor cacheInterceptor) {
+        this.cacheInterceptor = cacheInterceptor;
+        return this;
+    }
+
     public static CacheProxyBsContext newInstance(){
         return new CacheProxyBsContext();
     }
@@ -28,15 +46,18 @@ public class CacheProxyBsContext implements ICacheProxyBsContext {
     }
 
     @Override
-    public ICacheProxyBsContext target(ICache target) {
+    public CacheProxyBsContext target(ICache target) {
         this.target = target;
         return this;
     }
 
-    public ICacheProxyBsContext params(Object[] params) {
+    public CacheProxyBsContext params(Object[] params) {
         this.params = params;
         return this;
     }
+
+
+
 
     @Override
     public Object[] params() {
@@ -55,6 +76,7 @@ public class CacheProxyBsContext implements ICacheProxyBsContext {
 
     public CacheProxyBsContext method(Method method) {
         this.method = method;
+        Annotation[] annotations = method.getAnnotations();
         return this;
     }
 }

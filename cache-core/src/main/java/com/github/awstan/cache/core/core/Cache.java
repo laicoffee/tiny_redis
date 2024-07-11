@@ -1,5 +1,6 @@
 package com.github.awstan.cache.core.core;
 
+import com.github.awstan.cache.annotation.CacheInterceptor;
 import com.github.awstan.cache.api.ICache;
 import com.github.awstan.cache.api.ICacheEntry;
 import com.github.awstan.cache.api.ICacheEvict;
@@ -88,6 +89,7 @@ public class Cache<K, V> implements ICache <K, V> {
     }
 
     @Override
+    @CacheInterceptor(evict = true)
     public V put(K key, V value) {
         CacheEvictContext<K, V> context = new CacheEvictContext<>();
         context.key(key).size(sizeLimit).cache(this);

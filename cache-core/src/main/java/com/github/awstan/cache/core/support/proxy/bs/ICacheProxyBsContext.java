@@ -1,5 +1,6 @@
 package com.github.awstan.cache.core.support.proxy.bs;
 
+import com.github.awstan.cache.annotation.CacheInterceptor;
 import com.github.awstan.cache.api.ICache;
 
 import java.lang.reflect.Method;
@@ -48,5 +49,7 @@ public interface ICacheProxyBsContext {
      * @throws Throwable 异常信息
      */
     Object process() throws Throwable;
+
+    CacheInterceptor interceptor();
 
 }

@@ -7,6 +7,7 @@ import com.github.awstan.cache.core.evict.CacheEvictFifo;
 import com.github.awstan.cache.core.evict.CacheEvicts;
 import com.github.awstan.cache.core.proxy.CacheProxy;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,7 +21,7 @@ public class CacheBs <K,V>{
     /**
      * 缓存数据 map信息
      */
-    private Map<K,V> map;
+    private Map<K,V> map = new HashMap<>();
 
     /**
      * 大小限制
@@ -47,7 +48,7 @@ public class CacheBs <K,V>{
         return this;
     }
 
-    public Cache<K,V> build(){
+    public ICache<K,V> build(){
         Cache<K, V> cache = new Cache<>();
         cache.map(map);
         cache.sizeLimit(size);
@@ -55,7 +56,7 @@ public class CacheBs <K,V>{
 
         ICache<K, V> proxy =
                 CacheProxy.getProxy(cache);
-        return (Cache<K, V>) proxy;
+        return (ICache<K, V>) proxy;
 
     }
 
