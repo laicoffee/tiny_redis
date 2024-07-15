@@ -4,7 +4,10 @@ import com.github.awstan.cache.annotation.CacheInterceptor;
 import com.github.awstan.cache.api.ICache;
 import com.github.awstan.cache.api.ICacheEntry;
 import com.github.awstan.cache.api.ICacheEvict;
+import com.github.awstan.cache.api.ICacheExpire;
+import com.github.awstan.cache.core.expire.CacheExpire;
 import com.github.awstan.cache.core.proxy.CacheProxy;
+import com.github.awstan.cache.core.proxy.ICacheProxy;
 import com.github.awstan.cache.core.support.CacheEvictContext;
 
 import java.util.Collection;
@@ -34,6 +37,18 @@ public class Cache<K, V> implements ICache <K, V> {
     private ICacheEvict<K,V> evict;
 
     /**
+     * 过期策略
+     */
+    private ICacheExpire<K,V> expire;
+
+    /**
+     * 初始化
+     */
+    public void init(){
+        this.expire = new CacheExpire<>(this);
+    }
+
+    /**
      * 设置大小限制
      * @param sizeLimit
      * @return
@@ -56,6 +71,24 @@ public class Cache<K, V> implements ICache <K, V> {
     public Cache<K,V> evict(ICacheEvict<K,V> evict){
         this.evict = evict;
         return this;
+    }
+
+    @Override
+    public ICache<K, V> expire(K key, Long timeInMills) {
+        long expireTime = System.currentTimeMillis() + timeInMills;
+        Cache<K, V> proxy = (Cache<K, V>) CacheProxy.getProxy(this);
+        return proxy.expireAt(key,expireTime);
+    }
+
+    @Override
+    public ICache<K, V> expireAt(K key, Long timeInMills) {
+        this.expire.expire(key,timeInMills);
+        return this;
+    }
+
+    @Override
+    public ICacheExpire<K, V> expire() {
+        return this.expire;
     }
 
     @Override
@@ -124,17 +157,17 @@ public class Cache<K, V> implements ICache <K, V> {
 
     @Override
     public Set<K> keySet() {
-        return null;
+        return map.keySet();
     }
 
     @Override
     public Collection<V> values() {
-        return null;
+        return map.values();
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        return map.entrySet();
     }
 
 

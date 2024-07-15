@@ -23,5 +23,22 @@ public class CacheTest {
 
     }
 
+    @Test
+    public void expireTest() throws InterruptedException {
+        ICache<String, String> build = new CacheBs<String,String>().build();
+
+        build.put("key1", "value1");
+        build.put("key2", "value2");
+
+        build.expire("key1",100l);
+
+
+        System.out.println(build.keySet());
+
+        Thread.sleep(1000l);
+
+        System.out.println(build.keySet());
+    }
+
 
 }

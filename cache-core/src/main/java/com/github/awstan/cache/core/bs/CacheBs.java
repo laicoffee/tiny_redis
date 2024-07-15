@@ -54,6 +54,7 @@ public class CacheBs <K,V>{
         cache.sizeLimit(size);
         cache.evict(evict);
 
+        cache.init();
         ICache<K, V> proxy =
                 CacheProxy.getProxy(cache);
         return (ICache<K, V>) proxy;
