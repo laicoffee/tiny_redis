@@ -6,6 +6,7 @@ import com.github.awstan.cache.api.ICacheInterceptor;
 import com.github.awstan.cache.api.ICacheInterceptorContext;
 import com.github.awstan.cache.core.interceptor.CacheInterceptorContext;
 import com.github.awstan.cache.core.interceptor.CacheInterceptorEvictFifo;
+import com.github.awstan.cache.core.interceptor.CacheInterceptorRefresh;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,7 +26,16 @@ public class CacheProxyBs {
 
     private ICacheProxyBsContext context;
 
+    /**
+     * 淘汰策略拦截器
+     */
     private ICacheInterceptor evictInterceptor = new CacheInterceptorEvictFifo();
+
+    /**
+     * 过期策略拦截器
+     */
+    private ICacheInterceptor expireInterceptor = new CacheInterceptorRefresh();
+
 
     public CacheProxyBs context(ICacheProxyBsContext context){
         this.context = context;
@@ -79,6 +89,16 @@ public class CacheProxyBs {
      * @param before 是否执行拦截
      */
     public void interceptorHandler(CacheInterceptor cacheInterceptor,ICacheInterceptorContext context,ICache cache,boolean before){
+
+        // 执行过期策略
+        if(expireInterceptor != null){
+            if(before){
+                expireInterceptor.before(context);
+            }else{
+                expireInterceptor.after(context);
+            }
+        }
+
 
         // 执行淘汰策略
         if(evictInterceptor != null && cacheInterceptor!=null && cacheInterceptor.evict()){
