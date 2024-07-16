@@ -3,6 +3,7 @@ import com.github.awstan.cache.core.bs.CacheBs;
 import com.github.awstan.cache.core.core.Cache;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -13,14 +14,18 @@ import java.util.HashMap;
 public class CacheTest {
 
     @Test
-    public void test() {
+    public void test() throws IOException {
         ICache<String, String> build = new CacheBs<String,String>().build();
 
         build.put("key1", "value1");
         build.put("key2", "value2");
         build.put("key3", "value3");
-        build.put("key4", "value4");
+        build.remove("key4");
 
+
+        build.clear();
+
+        System.in.read();
     }
 
     @Test

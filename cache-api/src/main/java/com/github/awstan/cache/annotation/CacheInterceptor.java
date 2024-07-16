@@ -19,4 +19,10 @@ public @interface CacheInterceptor {
      */
     boolean evict() default false;
 
+    /**
+     * 是否执行AOF策略
+     * @return
+     */
+    boolean aof() default false;
+
 }

@@ -1,18 +1,18 @@
 package com.github.awstan.cache.core.core;
 
 import com.github.awstan.cache.annotation.CacheInterceptor;
-import com.github.awstan.cache.api.ICache;
-import com.github.awstan.cache.api.ICacheEntry;
-import com.github.awstan.cache.api.ICacheEvict;
-import com.github.awstan.cache.api.ICacheExpire;
+import com.github.awstan.cache.api.*;
 import com.github.awstan.cache.core.expire.CacheExpire;
 import com.github.awstan.cache.core.proxy.CacheProxy;
 import com.github.awstan.cache.core.proxy.ICacheProxy;
 import com.github.awstan.cache.core.support.CacheEvictContext;
+import com.github.awstan.cache.core.support.persist.CachePersistAof;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @Author pw7563
@@ -42,10 +42,19 @@ public class Cache<K, V> implements ICache <K, V> {
     private ICacheExpire<K,V> expire;
 
     /**
+     * 持久化策略
+     */
+    private ICachePersist<K,V> persist = new CachePersistAof("1.txt");
+
+    /**
      * 初始化
      */
     public void init(){
         this.expire = new CacheExpire<>(this);
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleWithFixedDelay(()->{
+            persist.persist(this);
+        },persist.delay(),persist.period(),persist.timeUnit());
     }
 
     /**
@@ -97,6 +106,11 @@ public class Cache<K, V> implements ICache <K, V> {
     }
 
     @Override
+    public ICachePersist<K, V> persist() {
+        return persist;
+    }
+
+    @Override
     public int size() {
         return map.size();
     }
@@ -122,7 +136,7 @@ public class Cache<K, V> implements ICache <K, V> {
     }
 
     @Override
-    @CacheInterceptor(evict = true)
+    @CacheInterceptor(evict = true,aof = true)
     public V put(K key, V value) {
         CacheEvictContext<K, V> context = new CacheEvictContext<>();
         context.key(key).size(sizeLimit).cache(this);
@@ -131,6 +145,7 @@ public class Cache<K, V> implements ICache <K, V> {
     }
 
     @Override
+    @CacheInterceptor(evict = true,aof = true)
     public V remove(Object key) {
         evict.removeKey((K) key);
         return map.remove(key);
@@ -151,6 +166,7 @@ public class Cache<K, V> implements ICache <K, V> {
     }
 
     @Override
+    @CacheInterceptor(evict = true,aof = true)
     public void clear() {
 
     }
@@ -170,5 +186,9 @@ public class Cache<K, V> implements ICache <K, V> {
         return map.entrySet();
     }
 
+    public ICache<K,V> persist(ICachePersist<K,V> persist){
+        this.persist = persist;
+        return this;
+    }
 
 }

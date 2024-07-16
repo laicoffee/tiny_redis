@@ -1,0 +1,12 @@
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@3327bd23
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@370736d9
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@5f9d02cb
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@3327bd23
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@370736d9
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@5f9d02cb
+public void com.github.awstan.cache.core.core.Cache.clear():[Ljava.lang.Object;@63753b6d
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@3327bd23
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@370736d9
+public java.lang.Object com.github.awstan.cache.core.core.Cache.put(java.lang.Object,java.lang.Object):[Ljava.lang.Object;@5f9d02cb
+public java.lang.Object com.github.awstan.cache.core.core.Cache.remove(java.lang.Object):[Ljava.lang.Object;@63753b6d
+public void com.github.awstan.cache.core.core.Cache.clear():[Ljava.lang.Object;@6b09bb57
